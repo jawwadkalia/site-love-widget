@@ -57,61 +57,56 @@ export function FloatingWidget({
     ? "right-6" 
     : "left-6";
 
-  const score = upvotes - downvotes;
+  const totalVotes = upvotes + downvotes;
 
   return (
     <>
       <div className={`fixed bottom-6 ${positionClasses} z-50 animate-fade-up`}>
-        <div className="flex flex-col items-center gap-2">
-          {/* Main Widget */}
-          <div className="flex items-center bg-card border-2 border-border rounded-2xl shadow-lg overflow-hidden">
-            {/* Upvote Button */}
+        <div className="bg-card border-2 border-border rounded-2xl shadow-lg px-5 py-4 flex flex-col items-center gap-2">
+          {/* Vote Buttons Row */}
+          <div className="flex items-center gap-3">
             <button
               onClick={() => handleVoteClick("upvote")}
               disabled={!!userVote}
-              className={`flex flex-col items-center justify-center px-4 py-3 transition-all duration-200 border-r border-border ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-medium text-sm transition-all duration-200 ${
                 userVote === "upvote"
-                  ? "bg-primary/10 text-primary"
+                  ? "bg-primary text-primary-foreground"
                   : userVote
-                    ? "opacity-50 cursor-not-allowed"
-                    : "hover:bg-primary/5 hover:text-primary"
+                    ? "bg-muted text-muted-foreground cursor-not-allowed"
+                    : "bg-primary/10 text-primary hover:bg-primary/20"
               }`}
             >
-              <ChevronUp className={`h-5 w-5 ${userVote === "upvote" ? "animate-bounce" : ""}`} />
-              <span className="text-xs font-medium mt-0.5">{upvotes.toLocaleString()}</span>
+              <ChevronUp className="h-4 w-4" />
+              <span>Upvote</span>
             </button>
 
-            {/* Score Display */}
-            <div className="px-4 py-3 flex flex-col items-center justify-center min-w-[60px]">
-              <span className={`text-lg font-bold ${score >= 0 ? "text-primary" : "text-destructive"}`}>
-                {score >= 0 ? "+" : ""}{score.toLocaleString()}
-              </span>
-              <span className="text-[10px] text-muted-foreground uppercase tracking-wide">Score</span>
-            </div>
-
-            {/* Downvote Button */}
             <button
               onClick={() => handleVoteClick("downvote")}
               disabled={!!userVote}
-              className={`flex flex-col items-center justify-center px-4 py-3 transition-all duration-200 border-l border-border ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-medium text-sm transition-all duration-200 ${
                 userVote === "downvote"
-                  ? "bg-destructive/10 text-destructive"
+                  ? "bg-destructive text-destructive-foreground"
                   : userVote
-                    ? "opacity-50 cursor-not-allowed"
-                    : "hover:bg-destructive/5 hover:text-destructive"
+                    ? "bg-muted text-muted-foreground cursor-not-allowed"
+                    : "bg-destructive/10 text-destructive hover:bg-destructive/20"
               }`}
             >
-              <ChevronDown className={`h-5 w-5 ${userVote === "downvote" ? "animate-bounce" : ""}`} />
-              <span className="text-xs font-medium mt-0.5">{downvotes.toLocaleString()}</span>
+              <ChevronDown className="h-4 w-4" />
+              <span>Downvote</span>
             </button>
           </div>
 
-          {/* Powered By Branding */}
+          {/* Vote Count */}
+          <p className="text-xs text-muted-foreground">
+            <span className="font-semibold text-foreground">{totalVotes.toLocaleString()}</span> people have voted
+          </p>
+
+          {/* Powered By */}
           <a
             href={brandUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-[10px] text-muted-foreground/60 hover:text-muted-foreground transition-colors"
+            className="text-[10px] text-muted-foreground/50 hover:text-muted-foreground transition-colors"
           >
             Powered by <span className="font-medium">{brandName}</span>
           </a>
