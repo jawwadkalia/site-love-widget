@@ -17,7 +17,7 @@ const Index = () => {
       <PricingSection />
       <CTASection />
       <Footer />
-      <FloatingWidget initialVotes={2847} position="bottom-right" />
+      <FloatingWidget initialUpvotes={2847} initialDownvotes={124} position="bottom-right" />
     </div>
   );
 };

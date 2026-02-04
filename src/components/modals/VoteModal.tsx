@@ -8,18 +8,27 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Mail, ChevronUp } from "lucide-react";
+import { Mail, ChevronUp, ChevronDown } from "lucide-react";
+import type { VoteType } from "@/components/widget/FloatingWidget";
 
 interface VoteModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onSubmit: (email: string) => void;
+  voteType?: VoteType | null;
 }
 
-export function VoteModal({ open, onOpenChange, onSubmit }: VoteModalProps) {
+export function VoteModal({ open, onOpenChange, onSubmit, voteType = "upvote" }: VoteModalProps) {
   const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const isUpvote = voteType === "upvote";
+  const VoteIcon = isUpvote ? ChevronUp : ChevronDown;
+  const voteLabel = isUpvote ? "upvote" : "downvote";
+  const accentClass = isUpvote ? "gradient-primary" : "bg-destructive";
+  const iconBgClass = isUpvote ? "bg-primary/10" : "bg-destructive/10";
+  const iconTextClass = isUpvote ? "text-primary" : "text-destructive";
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -46,14 +55,14 @@ export function VoteModal({ open, onOpenChange, onSubmit }: VoteModalProps) {
         {!isSubmitted ? (
           <>
             <DialogHeader>
-              <div className="mx-auto w-16 h-16 rounded-full gradient-primary flex items-center justify-center mb-4">
-                <ChevronUp className="h-8 w-8 text-primary-foreground" />
+              <div className={`mx-auto w-16 h-16 rounded-full ${accentClass} flex items-center justify-center mb-4`}>
+                <VoteIcon className="h-8 w-8 text-primary-foreground" />
               </div>
               <DialogTitle className="text-center text-xl">
-                Verify your vote
+                Verify your {voteLabel}
               </DialogTitle>
               <DialogDescription className="text-center">
-                We'll send you a magic link to verify your vote. No password needed!
+                We'll send you a magic link to verify your {voteLabel}. No password needed!
               </DialogDescription>
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-4 mt-4">
@@ -71,7 +80,7 @@ export function VoteModal({ open, onOpenChange, onSubmit }: VoteModalProps) {
               <Button 
                 type="submit" 
                 className="w-full" 
-                variant="hero"
+                variant={isUpvote ? "hero" : "destructive"}
                 disabled={isSubmitting}
               >
                 {isSubmitting ? "Sending..." : "Send Verification Link"}
@@ -83,13 +92,13 @@ export function VoteModal({ open, onOpenChange, onSubmit }: VoteModalProps) {
           </>
         ) : (
           <div className="text-center py-6">
-            <div className="mx-auto w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-              <Mail className="h-8 w-8 text-primary" />
+            <div className={`mx-auto w-16 h-16 rounded-full ${iconBgClass} flex items-center justify-center mb-4`}>
+              <Mail className={`h-8 w-8 ${iconTextClass}`} />
             </div>
             <DialogTitle className="text-xl mb-2">Check your inbox!</DialogTitle>
             <DialogDescription>
               We've sent a verification link to <strong>{email}</strong>. 
-              Click the link to confirm your vote.
+              Click the link to confirm your {voteLabel}.
             </DialogDescription>
             <Button variant="outline" className="mt-6" onClick={handleClose}>
               Got it
