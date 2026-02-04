@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { VoteModal } from "@/components/modals/VoteModal";
 import { ReviewModal, ReviewData } from "@/components/modals/ReviewModal";
+import { ReviewWidget } from "@/components/widget/ReviewWidget";
 
 const mockCompany = {
   name: "DesignLab",
@@ -322,6 +323,12 @@ export default function PublicProfile() {
       <ReviewModal
         open={showReviewModal}
         onOpenChange={setShowReviewModal}
+        onSubmit={handleReviewSubmit}
+      />
+
+      {/* Review Widget Demo */}
+      <ReviewWidget 
+        position="bottom-left"
         onSubmit={handleReviewSubmit}
       />
     </div>

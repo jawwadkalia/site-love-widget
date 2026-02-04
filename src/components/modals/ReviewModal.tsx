@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -16,6 +16,7 @@ interface ReviewModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onSubmit: (data: ReviewData) => void;
+  initialRating?: number;
 }
 
 export interface ReviewData {
@@ -25,14 +26,21 @@ export interface ReviewData {
   privateFeedback?: string;
 }
 
-export function ReviewModal({ open, onOpenChange, onSubmit }: ReviewModalProps) {
+export function ReviewModal({ open, onOpenChange, onSubmit, initialRating = 0 }: ReviewModalProps) {
   const [email, setEmail] = useState("");
-  const [rating, setRating] = useState(0);
+  const [rating, setRating] = useState(initialRating);
   const [hoveredRating, setHoveredRating] = useState(0);
   const [review, setReview] = useState("");
   const [privateFeedback, setPrivateFeedback] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+
+  // Update rating when initialRating changes (widget star selection)
+  useEffect(() => {
+    if (initialRating > 0) {
+      setRating(initialRating);
+    }
+  }, [initialRating]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
