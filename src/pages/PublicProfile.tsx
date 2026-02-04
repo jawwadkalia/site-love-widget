@@ -10,8 +10,11 @@ import {
   TrendingUp,
   MessageSquare,
   Filter,
-  ArrowUpDown
+  ArrowUpDown,
+  PenLine
 } from "lucide-react";
+import { VoteModal } from "@/components/modals/VoteModal";
+import { ReviewModal, ReviewData } from "@/components/modals/ReviewModal";
 
 const mockCompany = {
   name: "DesignLab",
@@ -99,17 +102,28 @@ export default function PublicProfile() {
   const [sortBy, setSortBy] = useState<SortOption>("top");
   const [hasVoted, setHasVoted] = useState(false);
   const [totalVotes, setTotalVotes] = useState(mockCompany.totalVotes);
+  const [showVoteModal, setShowVoteModal] = useState(false);
+  const [showReviewModal, setShowReviewModal] = useState(false);
 
   const sortedReviews = [...mockReviews].sort((a, b) => {
     if (sortBy === "top") return b.votes - a.votes;
     return 0; // Keep original order for "recent"
   });
 
-  const handleVote = () => {
+  const handleVoteClick = () => {
     if (!hasVoted) {
-      setTotalVotes(v => v + 1);
-      setHasVoted(true);
+      setShowVoteModal(true);
     }
+  };
+
+  const handleVoteSubmit = (email: string) => {
+    console.log("Vote submitted for:", email);
+    setTotalVotes(v => v + 1);
+    setHasVoted(true);
+  };
+
+  const handleReviewSubmit = (data: ReviewData) => {
+    console.log("Review submitted:", data);
   };
 
   return (
@@ -143,18 +157,29 @@ export default function PublicProfile() {
                       </p>
                     </div>
 
-                    {/* Vote button */}
-                    <button
-                      onClick={handleVote}
-                      className={`flex items-center gap-3 px-6 py-3 rounded-xl transition-all duration-300 shrink-0 ${
-                        hasVoted
-                          ? "gradient-primary text-primary-foreground shadow-glow"
-                          : "bg-card border-2 border-border hover:border-primary/50 hover:shadow-lg"
-                      }`}
-                    >
-                      <ChevronUp className={`h-5 w-5 ${hasVoted ? "animate-bounce" : ""}`} />
-                      <span className="font-bold text-xl">{totalVotes.toLocaleString()}</span>
-                    </button>
+                    {/* Action buttons */}
+                    <div className="flex gap-3 shrink-0">
+                      <Button
+                        variant="outline"
+                        size="lg"
+                        onClick={() => setShowReviewModal(true)}
+                        className="gap-2"
+                      >
+                        <PenLine className="h-4 w-4" />
+                        Write Review
+                      </Button>
+                      <button
+                        onClick={handleVoteClick}
+                        className={`flex items-center gap-3 px-6 py-3 rounded-xl transition-all duration-300 ${
+                          hasVoted
+                            ? "gradient-primary text-primary-foreground shadow-glow"
+                            : "bg-card border-2 border-border hover:border-primary/50 hover:shadow-lg"
+                        }`}
+                      >
+                        <ChevronUp className={`h-5 w-5 ${hasVoted ? "animate-bounce" : ""}`} />
+                        <span className="font-bold text-xl">{totalVotes.toLocaleString()}</span>
+                      </button>
+                    </div>
                   </div>
 
                   {/* Stats */}
@@ -287,6 +312,18 @@ export default function PublicProfile() {
       </main>
 
       <Footer />
+
+      {/* Modals */}
+      <VoteModal 
+        open={showVoteModal} 
+        onOpenChange={setShowVoteModal}
+        onSubmit={handleVoteSubmit}
+      />
+      <ReviewModal
+        open={showReviewModal}
+        onOpenChange={setShowReviewModal}
+        onSubmit={handleReviewSubmit}
+      />
     </div>
   );
 }
