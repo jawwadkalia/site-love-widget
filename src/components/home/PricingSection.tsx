@@ -8,11 +8,11 @@ const plans = [
     period: "forever",
     description: "Perfect for getting started with social proof.",
     features: [
-      "1 website",
       "Public reviews only",
       "Basic widget customization",
       "Community support",
       "UpvoteFlow branding",
+      "Up to 100 votes/month",
     ],
     cta: "Start Free",
     popular: false,
@@ -23,7 +23,6 @@ const plans = [
     period: "/month",
     description: "For businesses serious about customer feedback.",
     features: [
-      "Unlimited websites",
       "Private & public reviews",
       "Full widget customization",
       "Priority support",
@@ -31,6 +30,7 @@ const plans = [
       "Follow-up email system",
       "Advanced analytics",
       "Custom domain for profile",
+      "Unlimited votes",
     ],
     cta: "Start Pro Trial",
     popular: true,

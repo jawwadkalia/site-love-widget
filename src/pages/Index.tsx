@@ -5,6 +5,7 @@ import { FeaturesSection } from "@/components/home/FeaturesSection";
 import { PricingSection } from "@/components/home/PricingSection";
 import { TestimonialsSection } from "@/components/home/TestimonialsSection";
 import { CTASection } from "@/components/home/CTASection";
+import { FloatingWidget } from "@/components/widget/FloatingWidget";
 
 const Index = () => {
   return (
@@ -16,6 +17,7 @@ const Index = () => {
       <PricingSection />
       <CTASection />
       <Footer />
+      <FloatingWidget initialVotes={2847} position="bottom-right" />
     </div>
   );
 };
